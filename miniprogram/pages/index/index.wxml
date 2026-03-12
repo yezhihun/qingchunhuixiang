@@ -1,0 +1,27 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+  <view class="header">
+    <image src="/assets/logo.png" class="logo"></image>
+    <text class="title">青春回响</text>
+    <text class="subtitle">重回高中时代</text>
+  </view>
+  
+  <view class="user-info" wx:if="{{userInfo}}">
+    <image src="{{userInfo.avatarUrl}}" class="avatar"></image>
+    <text class="username">{{userInfo.nickName}}</text>
+  </view>
+  
+  <view class="schools-list">
+    <view class="school-item" wx:for="{{schools}}" wx:key="id" bindtap="selectSchool" data-school-id="{{item.id}}">
+      <view class="school-name">{{item.name}}</view>
+      <view class="school-stats">
+        <text>{{item.classes}}个班级</text>
+        <text>{{item.students}}名学生</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
