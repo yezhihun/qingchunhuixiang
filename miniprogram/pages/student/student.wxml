@@ -1,0 +1,41 @@
+<view class="student-container">
+  <view class="student-header">
+    <image class="avatar" src="{{student.avatar}}" mode="aspectFill"></image>
+    <view class="student-info">
+      <text class="name">{{student.name}}</text>
+      <text class="class">班级：{{student.class_name}}</text>
+      <text class="mood">心情：{{student.mood}}</text>
+    </view>
+  </view>
+  
+  <view class="stats-section">
+    <view class="stat-item">
+      <text class="stat-label">学习能力</text>
+      <progress percent="{{student.academics}}" stroke-width="8" active-color="#4299e1"></progress>
+    </view>
+    <view class="stat-item">
+      <text class="stat-label">社交能力</text>
+      <progress percent="{{student.social}}" stroke-width="8" active-color="#48bb78"></progress>
+    </view>
+    <view class="stat-item">
+      <text class="stat-label">体力值</text>
+      <progress percent="{{student.energy}}" stroke-width="8" active-color="#ed8936"></progress>
+    </view>
+  </view>
+  
+  <view class="skills-section">
+    <text class="section-title">技能特长</text>
+    <view class="skills-list">
+      <view wx:for="{{student.skills}}" wx:key="id" class="skill-item">
+        <text>{{item.name}}</text>
+        <text class="skill-level">Lv.{{item.level}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="actions-section">
+    <button class="action-btn talk-btn" bindtap="startConversation">对话</button>
+    <button class="action-btn gift-btn" bindtap="giveGift">送礼物</button>
+    <button class="action-btn invite-btn" bindtap="inviteActivity">邀请活动</button>
+  </view>
+</view>

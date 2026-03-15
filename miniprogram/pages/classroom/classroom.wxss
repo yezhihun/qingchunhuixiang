@@ -1,0 +1,104 @@
+/* 教室页面样式 */
+.container {
+  padding: 20rpx;
+  background-color: #f8f9fa;
+}
+
+.class-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #e9ecef;
+  margin-bottom: 30rpx;
+}
+
+.class-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #2d3748;
+}
+
+.time-display {
+  font-size: 24rpx;
+  color: #6c757d;
+}
+
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160rpx, 1fr));
+  gap: 20rpx;
+}
+
+.student-card {
+  background: white;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.student-card:hover {
+  transform: translateY(-2rpx);
+}
+
+.student-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-bottom: 10rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.student-name {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #2d3748;
+  margin-bottom: 8rpx;
+}
+
+.student-status {
+  font-size: 20rpx;
+  color: #6c757d;
+}
+
+.status-active {
+  color: #28a745;
+}
+
+.status-idle {
+  color: #ffc107;
+}
+
+.status-offline {
+  color: #6c757d;
+}
+
+.actions-bar {
+  margin-top: 30rpx;
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+}
+
+.action-btn {
+  padding: 12rpx 24rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: white;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-secondary {
+  background: #6c757d;
+}

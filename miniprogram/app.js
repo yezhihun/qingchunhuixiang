@@ -20,7 +20,7 @@ App({
   
   initWebSocket() {
     // WebSocket连接配置
-    const wsUrl = 'ws://localhost:5000/ws'; // 开发环境地址
+    const wsUrl = 'ws://172.16.45.229:5000/ws'; // 服务器地址
     this.globalData.socketTask = wx.connectSocket({
       url: wsUrl,
       success: () => {

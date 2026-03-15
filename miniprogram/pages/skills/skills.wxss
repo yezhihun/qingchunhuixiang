@@ -1,0 +1,77 @@
+/* pages/skills/skills.wxss */
+.container {
+  padding: 20rpx;
+  background-color: #f8f9fa;
+}
+
+.skills-header {
+  text-align: center;
+  margin-bottom: 40rpx;
+  padding: 30rpx 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 20rpx;
+}
+
+.skills-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.skills-desc {
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+
+.skill-category {
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  background: white;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.1);
+}
+
+.category-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  color: #2d3748;
+}
+
+.skill-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #e2e8f0;
+}
+
+.skill-item:last-child {
+  border-bottom: none;
+}
+
+.skill-name {
+  font-size: 28rpx;
+  color: #4a5568;
+}
+
+.skill-level {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #718096;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  margin-top: 20rpx;
+}

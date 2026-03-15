@@ -1,0 +1,27 @@
+<!-- pages/share/share.wxml -->
+<view class="container">
+  <view class="share-header">
+    <text class="title">分享青春回响</text>
+  </view>
+  
+  <view class="share-content">
+    <view class="share-item" bindtap="shareToFriends">
+      <view class="share-icon">👥</view>
+      <text class="share-text">分享给好友</text>
+    </view>
+    
+    <view class="share-item" bindtap="shareToMoments">
+      <view class="share-icon">📸</view>
+      <text class="share-text">分享到朋友圈</text>
+    </view>
+    
+    <view class="share-item" bindtap="generatePoster">
+      <view class="share-icon">🎨</view>
+      <text class="share-text">生成海报</text>
+    </view>
+  </view>
+  
+  <view class="game-info">
+    <text class="info-text">邀请好友一起体验高中生活模拟！</text>
+  </view>
+</view>

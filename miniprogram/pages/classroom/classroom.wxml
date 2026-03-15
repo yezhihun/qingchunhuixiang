@@ -1,0 +1,40 @@
+<!-- 教室页面 -->
+<view class="container">
+  <!-- 班级信息 -->
+  <view class="class-header">
+    <text class="class-name">{{className}}</text>
+    <text class="class-stats">学生: {{studentCount}}人 | 在线: {{onlineCount}}人</text>
+  </view>
+  
+  <!-- 学生列表 -->
+  <view class="students-container">
+    <block wx:for="{{students}}" wx:key="id">
+      <view class="student-card {{item.status === 'online' ? 'online' : 'offline'}}" 
+            bindtap="selectStudent" data-student-id="{{item.id}}">
+        <view class="student-avatar">
+          <image src="{{item.avatar}}" mode="aspectFill"></image>
+        </view>
+        <view class="student-info">
+          <text class="student-name">{{item.name}}</text>
+          <text class="student-mood">{{item.mood}}</text>
+          <view class="student-skills">
+            <block wx:for="{{item.skills}}" wx:key="index">
+              <text class="skill-tag">{{item}}</text>
+            </block>
+          </view>
+        </view>
+        <view class="student-status-indicator"></view>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+  
+  <!-- 空状态 -->
+  <view wx:elif="{{students.length === 0 && !loading}}" class="empty-state">
+    <text>暂无学生数据</text>
+  </view>
+</view>
