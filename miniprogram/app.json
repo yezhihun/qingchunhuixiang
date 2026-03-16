@@ -4,7 +4,8 @@
     "pages/classroom/classroom",
     "pages/student/student",
     "pages/skills/skills",
-    "pages/share/share"
+    "pages/share/share",
+    "pages/broadcast/broadcast"
   ],
   "window": {
     "backgroundTextStyle": "light",

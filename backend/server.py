@@ -15,6 +15,9 @@ import sqlite3
 from apscheduler.schedulers.background import BackgroundScheduler
 import eventlet
 
+# 导入广播系统
+from broadcast_system import BroadcastSystem
+
 # 使用 eventlet 作为异步模式
 eventlet.monkey_patch()
 

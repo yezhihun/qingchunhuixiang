@@ -1,0 +1,62 @@
+<!-- pages/broadcast/broadcast.wxml -->
+<view class="broadcast-container">
+  <!-- 夕阳背景 -->
+  <view class="sunset-background"></view>
+  
+  <!-- 广播控制面板 -->
+  <view class="broadcast-panel">
+    <view class="broadcast-header">
+      <text class="broadcast-title">校园广播黄金时段</text>
+      <text class="broadcast-time">{{currentTime}}</text>
+    </view>
+    
+    <!-- 当前播放内容 -->
+    <view class="current-program" wx:if="{{currentProgram}}">
+      <view class="program-icon">
+        <image src="/assets/icons/{{currentProgram.icon}}.png" mode="aspectFit"></image>
+      </view>
+      <view class="program-content">
+        <text class="program-name">{{currentProgram.name}}</text>
+        <text class="program-description">{{currentProgram.description}}</text>
+        <view class="program-timer">
+          <text>剩余时间: {{remainingTime}}秒</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 学生动态展示 -->
+    <view class="student-activities">
+      <view class="activity-item" wx:for="{{studentActivities}}" wx:key="id">
+        <view class="activity-avatar">
+          <image src="{{item.avatar}}" mode="aspectFill"></image>
+        </view>
+        <view class="activity-content">
+          <text class="activity-student">{{item.name}}</text>
+          <text class="activity-action">{{item.action}}</text>
+          <text class="activity-location">{{item.location}}</text>
+        </view>
+        <view class="activity-mood {{item.mood}}"></view>
+      </view>
+    </view>
+    
+    <!-- 经典剧情轮播 -->
+    <view class="classic-scenes">
+      <swiper indicator-dots autoplay interval="8000" duration="500">
+        <swiper-item wx:for="{{classicScenes}}" wx:key="id">
+          <view class="scene-item">
+            <image src="{{item.image}}" mode="widthFix"></image>
+            <text class="scene-title">{{item.title}}</text>
+            <text class="scene-description">{{item.description}}</text>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
+    
+    <!-- 分享按钮 -->
+    <view class="share-section">
+      <button class="share-button" bindtap="shareBroadcast">
+        <text>分享今日广播</text>
+      </button>
+    </view>
+  </view>
+</view>
