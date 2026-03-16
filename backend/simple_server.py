@@ -1,26 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-青春回响 - 后端服务器 (修复版本)
-使用 Flask + SocketIO 实现实时高中生活模拟游戏服务
+青春回响 - 简化版后端服务器
+单文件架构，避免模块导入问题
 """
 
 import os
-import sys
 import json
 import logging
 from datetime import datetime, timedelta
 from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room
 import sqlite3
-from apscheduler.schedulers.background import BackgroundScheduler
-import eventlet
-
-# 添加当前目录到Python路径
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-# 使用 eventlet 作为异步模式
-eventlet.monkey_patch()
+import random
+import threading
+import time
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
@@ -34,24 +28,135 @@ app.config['DATABASE'] = 'youth_echo.db'
 # 创建 SocketIO 实例
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
-# 导入本地模块
-try:
-    from broadcast_system import BroadcastSystem
-    from simulation.event_templates import CORE_EVENT_TEMPLATES
-    logger.info("成功导入本地模块")
-except ImportError as e:
-    logger.error(f"导入本地模块失败: {e}")
-    # 创建模拟模块
-    class BroadcastSystem:
-        def __init__(self):
-            pass
-        def start_broadcast(self):
-            pass
+# ==================== 核心事件模板 ====================
+CORE_EVENT_TEMPLATES = {
+    # 课堂相关事件
+    "classroom_quiz": {
+        "name": "突然小测验",
+        "description": "数学老师突然宣布进行10分钟小测验",
+        "category": "academic",
+        "probability": 0.25,
+        "time_slots": ["08:00-12:00", "14:00-17:30"],
+        "effects": {
+            "stress": "+15",
+            "academic_focus": "+10",
+            "energy": "-5"
+        }
+    },
+    "classroom_teacher_praise": {
+        "name": "老师表扬",
+        "description": "语文老师表扬了你的作文写得很好",
+        "category": "academic",
+        "probability": 0.2,
+        "time_slots": ["08:00-12:00", "14:00-17:30"],
+        "effects": {
+            "mood": "happy",
+            "confidence": "+20",
+            "social_status": "+10"
+        }
+    },
+    # 课间休息事件
+    "break_time_gossip": {
+        "name": "八卦传播",
+        "description": "听说隔壁班的学霸和校花在交往",
+        "category": "social",
+        "probability": 0.3,
+        "time_slots": ["10:00-10:20", "15:30-15:50"],
+        "effects": {
+            "social_activity": "+15",
+            "gossip_level": "+10"
+        }
+    },
+    "break_time_study_group": {
+        "name": "学习小组",
+        "description": "几个同学在讨论物理难题",
+        "category": "academic",
+        "probability": 0.25,
+        "time_slots": ["10:00-10:20", "15:30-15:50", "19:30-21:30"],
+        "effects": {
+            "academic_knowledge": "+10",
+            "friendship": "+15",
+            "energy": "-5"
+        }
+    },
+    # 午餐时间事件
+    "lunch_cafeteria_meeting": {
+        "name": "食堂偶遇",
+        "description": "在食堂排队时遇到了暗恋的同学",
+        "category": "social",
+        "probability": 0.2,
+        "time_slots": ["12:00-13:00"],
+        "effects": {
+            "heart_rate": "+20",
+            "nervousness": "+15",
+            "social_courage": "+10"
+        }
+    },
+    "lunch_food_sharing": {
+        "name": "分享午餐",
+        "description": "同桌带了妈妈做的好吃的便当，分给你一些",
+        "category": "social",
+        "probability": 0.15,
+        "time_slots": ["12:00-13:00"],
+        "effects": {
+            "happiness": "+20",
+            "friendship": "+25",
+            "energy": "+10"
+        }
+    },
+    # 下午活动事件
+    "afternoon_sports": {
+        "name": "篮球训练",
+        "description": "放学后和朋友一起打篮球",
+        "category": "physical",
+        "probability": 0.2,
+        "time_slots": ["17:30-19:00"],
+        "effects": {
+            "physical_fitness": "+15",
+            "energy": "-20",
+            "friendship": "+20"
+        }
+    },
+    "afternoon_library": {
+        "name": "图书馆自习",
+        "description": "在图书馆安静地复习功课",
+        "category": "academic",
+        "probability": 0.25,
+        "time_slots": ["17:30-19:00"],
+        "effects": {
+            "academic_knowledge": "+20",
+            "focus": "+25",
+            "energy": "-15"
+        }
+    },
+    # 晚自习事件
+    "evening_confession": {
+        "name": "晚自习告白",
+        "description": "晚自习结束后，有人递给你一封情书",
+        "category": "romantic",
+        "probability": 0.1,
+        "time_slots": ["21:30-22:00"],
+        "effects": {
+            "emotional_turbulence": "+30",
+            "heart_rate": "+25",
+            "sleep_quality": "-10"
+        }
+    },
+    "evening_homework_help": {
+        "name": "作业互助",
+        "description": "同桌帮你解答了一道很难的数学题",
+        "category": "academic",
+        "probability": 0.3,
+        "time_slots": ["19:30-21:30"],
+        "effects": {
+            "academic_understanding": "+25",
+            "gratitude": "+20",
+            "friendship": "+15"
+        }
+    }
+}
 
-# 全局变量
-scheduler = None
-broadcast_system = BroadcastSystem()
-
+# ==================== 数据库初始化 ====================
 def init_database():
     """初始化数据库"""
     conn = sqlite3.connect(app.config['DATABASE'])
@@ -112,7 +217,6 @@ def init_database():
     # 插入示例数据
     cursor.execute("SELECT COUNT(*) FROM schools")
     if cursor.fetchone()[0] == 0:
-        # 插入示例学校
         schools = [
             ('school_001', '第一高中'),
             ('school_002', '第二高中'), 
@@ -120,7 +224,6 @@ def init_database():
         ]
         cursor.executemany("INSERT INTO schools (id, name) VALUES (?, ?)", schools)
         
-        # 插入示例班级
         classes = [
             ('class_001', 'school_001', '高一(1)班'),
             ('class_002', 'school_001', '高一(2)班'),
@@ -129,7 +232,6 @@ def init_database():
         ]
         cursor.executemany("INSERT INTO classes (id, school_id, name) VALUES (?, ?, ?)", classes)
         
-        # 插入示例学生
         students = [
             ('student_001', 'class_001', '李明', '/assets/avatars/student1.png'),
             ('student_002', 'class_001', '王芳', '/assets/avatars/student2.png'),
@@ -143,6 +245,7 @@ def init_database():
     conn.close()
     logger.info("数据库初始化完成")
 
+# ==================== API路由 ====================
 @app.route('/api/schools')
 def get_schools():
     """获取学校列表"""
@@ -213,6 +316,7 @@ def get_students(class_id):
     conn.close()
     return jsonify(students)
 
+# ==================== WebSocket处理 ====================
 @socketio.on('connect')
 def handle_connect():
     """处理客户端连接"""
@@ -244,95 +348,16 @@ def handle_join_class(data):
             }, room=request.sid)
         conn.close()
 
-@socketio.on('leave_class')
-def handle_leave_class(data):
-    """离开班级房间"""
-    class_id = data.get('class_id')
-    if class_id:
-        leave_room(class_id)
-        logger.info(f"用户 {request.sid} 离开班级房间: {class_id}")
-
-def simulate_student_behavior():
-    """模拟学生行为（定时任务）"""
-    try:
-        conn = sqlite3.connect(app.config['DATABASE'])
-        cursor = conn.cursor()
-        
-        # 更新学生状态
-        cursor.execute('''
-            UPDATE students 
-            SET energy = MAX(0, MIN(100, energy + CAST((RANDOM() % 21) - 10 AS INTEGER))),
-                social_points = MAX(0, MIN(100, social_points + CAST((RANDOM() % 11) - 5 AS INTEGER))),
-                academic_points = MAX(0, MIN(100, academic_points + CAST((RANDOM() % 11) - 5 AS INTEGER))),
-                last_active = CURRENT_TIMESTAMP
-        ''')
-        
-        # 随机生成事件
-        cursor.execute('SELECT id, class_id FROM students ORDER BY RANDOM() LIMIT 1')
-        student = cursor.fetchone()
-        if student:
-            student_id, class_id = student
-            event_types = ['chat', 'study', 'rest', 'activity']
-            event_type = event_types[hash(student_id) % len(event_types)]
-            
-            cursor.execute('''
-                INSERT INTO events (class_id, event_type, description, target_student_id)
-                VALUES (?, ?, ?, ?)
-            ''', (class_id, event_type, f'学生行为事件: {event_type}', student_id))
-            
-            # 广播事件到班级房间
-            socketio.emit('class_update', {
-                'type': 'student_behavior',
-                'student_id': student_id,
-                'event_type': event_type,
-                'timestamp': datetime.now().isoformat()
-            }, room=class_id)
-        
-        conn.commit()
-        conn.close()
-        logger.info("学生行为模拟完成")
-        
-    except Exception as e:
-        logger.error(f"模拟学生行为出错: {e}")
-
-def start_scheduler():
-    """启动定时任务调度器"""
-    global scheduler
-    if scheduler is None:
-        scheduler = BackgroundScheduler()
-        # 每30秒模拟一次学生行为
-        scheduler.add_job(simulate_student_behavior, 'interval', seconds=30)
-        scheduler.start()
-        logger.info("定时任务调度器已启动")
-
-def stop_scheduler():
-    """停止定时任务调度器"""
-    global scheduler
-    if scheduler:
-        scheduler.shutdown()
-        scheduler = None
-        logger.info("定时任务调度器已停止")
-
+# ==================== 主函数 ====================
 if __name__ == '__main__':
     # 初始化数据库
     init_database()
     
-    # 启动定时任务
-    start_scheduler()
-    
-    # 启动广播系统
-    try:
-        broadcast_system.start_broadcast()
-    except Exception as e:
-        logger.warning(f"广播系统启动失败: {e}")
-    
     try:
         # 启动服务器
-        logger.info("青春回响服务器启动中...")
+        logger.info("青春回响简化版服务器启动中...")
         logger.info("WebSocket 服务器地址: ws://localhost:5000")
         logger.info("HTTP API 地址: http://localhost:5000/api")
         socketio.run(app, host='0.0.0.0', port=5000, debug=False)
     except KeyboardInterrupt:
         logger.info("服务器正在关闭...")
-    finally:
-        stop_scheduler()

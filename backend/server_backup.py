@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-青春回响 - 后端服务器 (修复版本)
+青春回响 - 后端服务器
 使用 Flask + SocketIO 实现实时高中生活模拟游戏服务
 """
 
 import os
-import sys
 import json
 import logging
 from datetime import datetime, timedelta
@@ -16,8 +15,8 @@ import sqlite3
 from apscheduler.schedulers.background import BackgroundScheduler
 import eventlet
 
-# 添加当前目录到Python路径
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# 导入广播系统
+from .broadcast_system import BroadcastSystem
 
 # 使用 eventlet 作为异步模式
 eventlet.monkey_patch()
@@ -34,23 +33,8 @@ app.config['DATABASE'] = 'youth_echo.db'
 # 创建 SocketIO 实例
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
-# 导入本地模块
-try:
-    from broadcast_system import BroadcastSystem
-    from simulation.event_templates import CORE_EVENT_TEMPLATES
-    logger.info("成功导入本地模块")
-except ImportError as e:
-    logger.error(f"导入本地模块失败: {e}")
-    # 创建模拟模块
-    class BroadcastSystem:
-        def __init__(self):
-            pass
-        def start_broadcast(self):
-            pass
-
 # 全局变量
 scheduler = None
-broadcast_system = BroadcastSystem()
 
 def init_database():
     """初始化数据库"""
@@ -319,12 +303,6 @@ if __name__ == '__main__':
     
     # 启动定时任务
     start_scheduler()
-    
-    # 启动广播系统
-    try:
-        broadcast_system.start_broadcast()
-    except Exception as e:
-        logger.warning(f"广播系统启动失败: {e}")
     
     try:
         # 启动服务器
