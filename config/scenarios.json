@@ -1,0 +1,32 @@
+{
+  "scenarios": {
+    "classroom": {
+      "name": "教室场景",
+      "description": "上课时间的教室环境",
+      "time_slots": ["08:00-12:00", "14:00-17:00"],
+      "base_probability_multiplier": 1.0,
+      "available_events": ["teacher_comes", "quiz_announcement", "class_discussion", "homework_check"]
+    },
+    "break_time": {
+      "name": "课间休息",
+      "description": "课间十分钟休息时间",
+      "time_slots": ["10:00-10:10", "15:30-15:40"],
+      "base_probability_multiplier": 1.2,
+      "available_events": ["gossip_spread", "club_recruitment", "snack_sharing", "quick_chat"]
+    },
+    "after_school": {
+      "name": "放学后",
+      "description": "放学后的校园时光",
+      "time_slots": ["17:00-19:00"],
+      "base_probability_multiplier": 0.8,
+      "available_events": ["study_group", "confession", "sports_club", "library_study"]
+    },
+    "lunch_time": {
+      "name": "午餐时间",
+      "description": "食堂用餐时间",
+      "time_slots": ["12:00-13:00"],
+      "base_probability_multiplier": 1.1,
+      "available_events": ["cafeteria_gossip", "lunch_invitation", "food_spill", "table_mate_conversation"]
+    }
+  }
+}

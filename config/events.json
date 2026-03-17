@@ -1,0 +1,60 @@
+{
+  "events": {
+    "teacher_comes": {
+      "name": "老师来了",
+      "description": "班主任突然进入教室",
+      "available_scenarios": ["classroom"],
+      "base_probability": 0.3,
+      "student_selection": {
+        "type": "all"
+      },
+      "effects": ["students_silent", "attention_increase"],
+      "conditions": {
+        "time_of_day": ["08:00-12:00", "14:00-17:00"],
+        "min_students_present": 5
+      }
+    },
+    "quiz_announcement": {
+      "name": "小测验通知", 
+      "description": "老师宣布明天有小测验",
+      "available_scenarios": ["classroom"],
+      "base_probability": 0.2,
+      "student_selection": {
+        "type": "all"
+      },
+      "effects": ["stress_increase", "study_motivation"],
+      "conditions": {
+        "day_of_week": ["monday", "tuesday", "wednesday", "thursday"]
+      }
+    },
+    "gossip_spread": {
+      "name": "八卦传播",
+      "description": "某个八卦消息在班级中传播",
+      "available_scenarios": ["break_time", "lunch_time"],
+      "base_probability": 0.4,
+      "student_selection": {
+        "type": "random",
+        "count": 3
+      },
+      "effects": ["social_activity", "relationship_change"],
+      "conditions": {
+        "min_social_energy": 50
+      }
+    },
+    "confession": {
+      "name": "告白事件",
+      "description": "某位同学鼓起勇气告白",
+      "available_scenarios": ["after_school"],
+      "base_probability": 0.15,
+      "student_selection": {
+        "type": "random", 
+        "count": 2
+      },
+      "effects": ["emotional_turbulence", "relationship_drama"],
+      "conditions": {
+        "min_relationship_level": 2,
+        "max_stress_level": 60
+      }
+    }
+  }
+}

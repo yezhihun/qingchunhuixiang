@@ -1,76 +1,92 @@
 """
-青春回响 - 事件系统
-处理游戏中的各种事件触发和处理
+青春回响 - 配置驱动的事件系统
+处理游戏中的各种事件触发和处理，完全基于外部配置文件
 """
-import random
+import os
 import json
+import random
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 from .student_behavior import StudentBehavior
 
 class EventSystem:
-    def __init__(self):
+    def __init__(self, config_dir: str = None):
+        if config_dir is None:
+            config_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config')
+        
+        self.config_dir = config_dir
         self.events = []
-        self.event_templates = self._load_event_templates()
+        
+        # 加载所有配置文件
+        self.event_templates = self._load_json_config('events.json')
+        self.effects_config = self._load_json_config('effects.json')
+        self.scenarios_config = self._load_json_config('scenarios.json')
+        
         self.student_behavior = StudentBehavior()
         
-    def _load_event_templates(self) -> Dict[str, Any]:
-        """加载事件模板"""
-        return {
-            "classroom": {
-                "teacher_comes": {
-                    "name": "老师来了",
-                    "description": "班主任突然进入教室",
-                    "probability": 0.3,
-                    "effects": ["students_silent", "attention_increase"]
-                },
-                "quiz_announcement": {
-                    "name": "小测验通知",
-                    "description": "老师宣布明天有小测验",
-                    "probability": 0.2,
-                    "effects": ["stress_increase", "study_motivation"]
-                }
-            },
-            "break_time": {
-                "gossip_spread": {
-                    "name": "八卦传播",
-                    "description": "某个八卦消息在班级中传播",
-                    "probability": 0.4,
-                    "effects": ["social_activity", "relationship_change"]
-                },
-                "club_recruitment": {
-                    "name": "社团招新",
-                    "description": "社团成员来班级招新",
-                    "probability": 0.25,
-                    "effects": ["interest_discovery", "social_expansion"]
-                }
-            },
-            "after_school": {
-                "study_group": {
-                    "name": "学习小组",
-                    "description": "几个同学组织学习小组",
-                    "probability": 0.35,
-                    "effects": ["academic_improvement", "friendship_development"]
-                },
-                "confession": {
-                    "name": "告白事件",
-                    "description": "某位同学鼓起勇气告白",
-                    "probability": 0.15,
-                    "effects": ["emotional_turbulence", "relationship_drama"]
-                }
-            }
-        }
+    def _load_json_config(self, filename: str) -> Dict[str, Any]:
+        """从配置目录加载JSON配置文件"""
+        config_path = os.path.join(self.config_dir, filename)
+        try:
+            with open(config_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            print(f"警告: 配置文件 {config_path} 未找到，使用空配置")
+            return {}
+        except json.JSONDecodeError as e:
+            print(f"错误: 配置文件 {config_path} JSON格式错误: {e}")
+            return {}
     
-    def generate_events_for_period(self, period: str, class_id: str, students: List[Dict]) -> List[Dict]:
-        """为指定时间段生成事件"""
-        if period not in self.event_templates:
-            return []
+    def get_current_scenario(self, current_time: str = None) -> str:
+        """根据当前时间确定场景"""
+        if current_time is None:
+            current_time = datetime.now().strftime('%H:%M')
             
-        events = []
-        templates = self.event_templates[period]
+        for scenario_name, scenario_data in self.scenarios_config.get('scenarios', {}).items():
+            for time_slot in scenario_data.get('time_slots', []):
+                start_time, end_time = time_slot.split('-')
+                if self._is_time_in_range(current_time, start_time, end_time):
+                    return scenario_name
+        return "default"
+    
+    def _is_time_in_range(self, current: str, start: str, end: str) -> bool:
+        """检查当前时间是否在指定范围内"""
+        current_parts = list(map(int, current.split(':')))
+        start_parts = list(map(int, start.split(':')))
+        end_parts = list(map(int, end.split(':')))
         
-        for event_key, template in templates.items():
-            if random.random() < template["probability"]:
+        current_minutes = current_parts[0] * 60 + current_parts[1]
+        start_minutes = start_parts[0] * 60 + start_parts[1]
+        end_minutes = end_parts[0] * 60 + end_parts[1]
+        
+        return start_minutes <= current_minutes <= end_minutes
+    
+    def generate_events_for_period(self, period: str, class_id: str, students: List[Dict], 
+                                 current_time: str = None) -> List[Dict]:
+        """为指定时间段生成事件"""
+        if current_time is None:
+            current_time = datetime.now().strftime('%H:%M')
+            
+        # 获取当前场景
+        current_scenario = self.get_current_scenario(current_time)
+        if current_scenario not in self.scenarios_config.get('scenarios', {}):
+            return []
+        
+        scenario_data = self.scenarios_config['scenarios'][current_scenario]
+        available_events = scenario_data.get('available_events', [])
+        base_multiplier = scenario_data.get('base_probability_multiplier', 1.0)
+        
+        events = []
+        
+        for event_key in available_events:
+            if event_key not in self.event_templates.get('events', {}):
+                continue
+                
+            template = self.event_templates['events'][event_key]
+            # 应用场景概率倍数
+            adjusted_probability = min(1.0, template.get('probability', 0.1) * base_multiplier)
+            
+            if random.random() < adjusted_probability:
                 event = {
                     "id": f"{event_key}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
                     "type": event_key,
@@ -79,7 +95,8 @@ class EventSystem:
                     "class_id": class_id,
                     "timestamp": datetime.now().isoformat(),
                     "affected_students": self._select_affected_students(students, template),
-                    "effects": template["effects"]
+                    "effects": template.get("effects", []),
+                    "scenario": current_scenario
                 }
                 events.append(event)
                 
@@ -87,24 +104,21 @@ class EventSystem:
     
     def _select_affected_students(self, students: List[Dict], template: Dict) -> List[str]:
         """选择受影响的学生"""
-        # 根据事件类型选择学生
-        if "confession" in template.get("name", ""):
-            # 告白事件选择2个学生
-            if len(students) >= 2:
-                return [s["id"] for s in random.sample(students, 2)]
-        elif "study_group" in template.get("name", ""):
-            # 学习小组选择3-5个学生
-            group_size = min(random.randint(3, 5), len(students))
-            return [s["id"] for s in random.sample(students, group_size)]
-        else:
-            # 其他事件可能影响全班或随机学生
-            if random.random() < 0.5:
-                return [s["id"] for s in students]  # 全班
-            else:
-                affected_count = min(random.randint(1, 3), len(students))
-                return [s["id"] for s in random.sample(students, affected_count)]
-                
-        return []
+        selection_method = template.get('selection_method', 'random')
+        count_range = template.get('affected_count', [1, 3])
+        
+        if selection_method == 'all':
+            return [s["id"] for s in students]
+        elif selection_method == 'specific':
+            # 可以根据学生属性选择特定学生
+            specific_ids = template.get('specific_student_ids', [])
+            return [sid for sid in specific_ids if any(s["id"] == sid for s in students)]
+        else:  # random
+            min_count, max_count = count_range
+            affected_count = min(random.randint(min_count, max_count), len(students))
+            if affected_count <= 0:
+                return []
+            return [s["id"] for s in random.sample(students, affected_count)]
     
     def process_event_effects(self, event: Dict, students: List[Dict]) -> List[Dict]:
         """处理事件对学生的影響"""
@@ -113,49 +127,41 @@ class EventSystem:
         for student in students:
             if student["id"] in event["affected_students"]:
                 # 应用事件效果
-                for effect in event["effects"]:
-                    student = self._apply_effect(student, effect, event)
+                for effect_key in event["effects"]:
+                    student = self._apply_effect_from_config(student, effect_key)
             updated_students.append(student)
             
         return updated_students
     
-    def _apply_effect(self, student: Dict, effect: str, event: Dict) -> Dict:
-        """应用具体效果到学生"""
+    def _apply_effect_from_config(self, student: Dict, effect_key: str) -> Dict:
+        """从配置文件应用效果到学生"""
+        if effect_key not in self.effects_config.get('effects', {}):
+            return student
+            
+        effect_config = self.effects_config['effects'][effect_key]
         student_copy = student.copy()
         
-        if effect == "students_silent":
-            student_copy["current_mood"] = "nervous"
-            student_copy["activity_level"] = max(0, student_copy.get("activity_level", 50) - 20)
+        # 应用属性变化
+        for attr_name, change_config in effect_config.get('attribute_changes', {}).items():
+            current_value = student_copy.get(attr_name, 50)  # 默认值50
             
-        elif effect == "attention_increase":
-            student_copy["focus"] = min(100, student_copy.get("focus", 50) + 15)
-            
-        elif effect == "stress_increase":
-            student_copy["stress"] = min(100, student_copy.get("stress", 30) + 25)
-            
-        elif effect == "study_motivation":
-            student_copy["motivation"] = min(100, student_copy.get("motivation", 50) + 20)
-            
-        elif effect == "social_activity":
-            student_copy["social_energy"] = min(100, student_copy.get("social_energy", 60) + 15)
-            
-        elif effect == "relationship_change":
-            # 随机改变一些关系值
-            if "relationships" not in student_copy:
-                student_copy["relationships"] = {}
-            # 这里可以更复杂的逻辑
-            
-        elif effect == "academic_improvement":
-            student_copy["academic_score"] = min(100, student_copy.get("academic_score", 70) + 5)
-            
-        elif effect == "friendship_development":
-            student_copy["friendship_tendency"] = min(100, student_copy.get("friendship_tendency", 50) + 10)
-            
-        elif effect == "emotional_turbulence":
-            student_copy["emotional_stability"] = max(0, student_copy.get("emotional_stability", 70) - 30)
-            
-        elif effect == "relationship_drama":
-            student_copy["drama_level"] = min(100, student_copy.get("drama_level", 20) + 40)
+            if 'set' in change_config:
+                # 直接设置值
+                new_value = change_config['set']
+            elif 'change' in change_config:
+                # 相对变化
+                change_amount = change_config['change']
+                new_value = current_value + change_amount
+                
+                # 应用边界限制
+                if 'min' in change_config:
+                    new_value = max(change_config['min'], new_value)
+                if 'max' in change_config:
+                    new_value = min(change_config['max'], new_value)
+            else:
+                continue
+                
+            student_copy[attr_name] = new_value
             
         return student_copy
     

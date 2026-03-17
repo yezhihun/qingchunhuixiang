@@ -1,0 +1,67 @@
+{
+  "effects": {
+    "mood_nervous": {
+      "name": "心情紧张",
+      "description": "学生变得紧张",
+      "plugin": "attribute_change",
+      "attribute_changes": {
+        "current_mood": {"set": "nervous"},
+        "activity_level": {"change": -20, "min": 0}
+      }
+    },
+    "focus_increase": {
+      "name": "注意力提升", 
+      "description": "注意力集中度提高",
+      "plugin": "attribute_change",
+      "attribute_changes": {
+        "focus": {"change": 15, "max": 100}
+      }
+    },
+    "stress_up": {
+      "name": "压力增加",
+      "description": "感受到学习压力",
+      "plugin": "attribute_change", 
+      "attribute_changes": {
+        "stress": {"change": 25, "max": 100}
+      }
+    },
+    "motivation_boost": {
+      "name": "动机提升",
+      "description": "学习积极性提高",
+      "plugin": "attribute_change",
+      "attribute_changes": {
+        "motivation": {"change": 20, "max": 100}
+      }
+    },
+    "social_energy_up": {
+      "name": "社交能量提升",
+      "description": "更愿意社交互动",
+      "plugin": "attribute_change",
+      "attribute_changes": {
+        "social_energy": {"change": 15, "max": 100}
+      }
+    },
+    "academic_improve": {
+      "name": "学业进步",
+      "description": "学术能力提升",
+      "plugin": "attribute_change",
+      "attribute_changes": {
+        "academic_score": {"change": 5, "max": 100}
+      }
+    },
+    "friendship_grow": {
+      "name": "友谊发展",
+      "description": "与同学关系变好",
+      "plugin": "relationship_update",
+      "relationship_change": 10
+    },
+    "emotional_down": {
+      "name": "情绪低落",
+      "description": "情绪稳定性下降",
+      "plugin": "attribute_change",
+      "attribute_changes": {
+        "emotional_stability": {"change": -30, "min": 0}
+      }
+    }
+  }
+}
