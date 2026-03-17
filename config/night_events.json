@@ -1,0 +1,41 @@
+{
+  "night_events": {
+    "dreams_and_reflections": {
+      "name": "梦境与反思",
+      "description": "学生在睡眠中的梦境和内心思考",
+      "probability": 0.8,
+      "available_time_slots": ["22:00-06:00"],
+      "effects": ["mood_influence", "stress_relief", "insight_gain"],
+      "student_types": ["all"],
+      "selection_method": "all"
+    },
+    "late_night_studying": {
+      "name": "深夜学习",
+      "description": "学生熬夜复习功课",
+      "probability": 0.3,
+      "available_time_slots": ["22:00-02:00"],
+      "effects": ["academic_improve", "energy_decrease", "stress_increase"],
+      "student_types": ["bookworm", "perfectionist", "anxious"],
+      "selection_method": "specific_types"
+    },
+    "family_conversation": {
+      "name": "家庭对话",
+      "description": "与家人的晚间交流",
+      "probability": 0.6,
+      "available_time_slots": ["21:00-22:00"],
+      "effects": ["emotional_support", "pressure_increase", "relationship_change"],
+      "student_types": ["all"],
+      "selection_method": "random",
+      "affected_count": [1, 3]
+    },
+    "phone_addiction": {
+      "name": "手机沉迷",
+      "description": "深夜玩手机无法入睡",
+      "probability": 0.4,
+      "available_time_slots": ["22:00-03:00"],
+      "effects": ["energy_decrease", "social_energy_increase", "focus_decrease"],
+      "student_types": ["social_butterfly", "rebel", "loner"],
+      "selection_method": "specific_types"
+    }
+  }
+}

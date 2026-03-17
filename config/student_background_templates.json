@@ -1,0 +1,140 @@
+{
+  "background_templates": {
+    "small_town_genius": {
+      "weight": 0.25,
+      "basic_info": {
+        "age_range": [15, 17],
+        "gender_distribution": {"male": 0.6, "female": 0.4}
+      },
+      "family_background": {
+        "structure": "nuclear_family",
+        "income_level": "middle",
+        "parents_occupation": ["teacher", "civil_servant", "small_business"],
+        "family_values": ["education_first", "hard_work", "filial_piety"]
+      },
+      "academic_history": {
+        "grade_trend": "stable",
+        "subject_strengths": ["math", "physics", "chemistry"],
+        "subject_weaknesses": ["english", "art", "pe"],
+        "study_habits": "disciplined_and_methodical"
+      },
+      "social_history": {
+        "social_reputation": "average",
+        "personality_in_groups": "quiet_observer",
+        "extracurricular_activities": ["math_club", "science_competition"]
+      },
+      "story_patterns": [
+        "来自{hometown}的优秀学生，以优异成绩考入省重点高中，带着全家的期望来到大城市...",
+        "父母都是普通职工，对他寄予厚望，希望他能通过读书改变命运...",
+        "在小镇一直是学霸，来到省重点后发现高手如云，正在努力适应新的竞争环境..."
+      ],
+      "current_situation": {
+        "starting_motivation": "考上985大学，不辜负父母期望",
+        "hidden_struggles": ["害怕让父母失望", "社交能力不足", "经济压力"],
+        "secret_dreams": ["想去大城市工作", "希望能交到真心朋友"]
+      }
+    },
+    "city_privileged": {
+      "weight": 0.2,
+      "basic_info": {
+        "age_range": [15, 18],
+        "gender_distribution": {"male": 0.5, "female": 0.5}
+      },
+      "family_background": {
+        "structure": "nuclear_family",
+        "income_level": "high",
+        "parents_occupation": ["executive", "entrepreneur", "professional"],
+        "family_values": ["excellence", "networking", "global_perspective"]
+      },
+      "academic_history": {
+        "grade_trend": "declining",
+        "subject_strengths": ["english", "art", "music"],
+        "subject_weaknesses": ["math", "physics"],
+        "study_habits": "talented_but_lazy"
+      },
+      "social_history": {
+        "social_reputation": "popular",
+        "personality_in_groups": "natural_leader",
+        "extracurricular_activities": ["piano", "tennis", "overseas_summer_camps"]
+      },
+      "story_patterns": [
+        "家境优渥的都市孩子，习惯了众星捧月的生活，对学习不太上心...",
+        "虽然成绩一般，但在艺术和社交方面很有天赋，是班级的风云人物...",
+        "父母对他期望很高，但更注重综合素质发展，经常安排各种课外活动..."
+      ],
+      "current_situation": {
+        "starting_motivation": "享受高中生活，建立人脉关系",
+        "hidden_struggles": ["家庭期望压力", "缺乏真正的朋友", "自我认同困惑"],
+        "secret_dreams": ["追求自己的兴趣", "摆脱家庭安排"]
+      }
+    },
+    "struggling_student": {
+      "weight": 0.3,
+      "basic_info": {
+        "age_range": [16, 18],
+        "gender_distribution": {"male": 0.7, "female": 0.3}
+      },
+      "family_background": {
+        "structure": "single_parent",
+        "income_level": "low",
+        "parents_occupation": ["factory_worker", "service_industry", "unemployed"],
+        "family_values": ["survival_first", "practical_skills"]
+      },
+      "academic_history": {
+        "grade_trend": "declining",
+        "subject_strengths": ["pe", "hands_on_subjects"],
+        "subject_weaknesses": ["all_academic_subjects"],
+        "study_habits": "distracted_and_unmotivated"
+      },
+      "social_history": {
+        "social_reputation": "controversial",
+        "personality_in_groups": "rebellious_or_withdrawn",
+        "extracurricular_activities": ["part_time_job", "online_gaming"]
+      },
+      "story_patterns": [
+        "家庭经济困难，父母忙于生计无暇顾及学习，成绩一直不理想...",
+        "觉得读书无用，更想早点工作赚钱帮家里减轻负担...",
+        "在学校经常被忽视或歧视，内心充满愤怒和自卑..."
+      ],
+      "current_situation": {
+        "starting_motivation": "混完高中，早点工作",
+        "hidden_struggles": ["家庭经济压力", "自卑心理", "缺乏关爱"],
+        "secret_dreams": ["希望能被理解", "想要证明自己"]
+      }
+    },
+    "social_butterfly": {
+      "weight": 0.25,
+      "basic_info": {
+        "age_range": [15, 17],
+        "gender_distribution": {"male": 0.4, "female": 0.6}
+      },
+      "family_background": {
+        "structure": "nuclear_family",
+        "income_level": "middle",
+        "parents_occupation": ["varied"],
+        "family_values": ["happiness", "relationships", "creativity"]
+      },
+      "academic_history": {
+        "grade_trend": "stable",
+        "subject_strengths": ["chinese", "history", "art"],
+        "subject_weaknesses": ["math", "physics"],
+        "study_habits": "social_learning"
+      },
+      "social_history": {
+        "social_reputation": "very_popular",
+        "personality_in_groups": "connector_and_mediator",
+        "extracurricular_activities": ["drama_club", "student_council", "party_planning"]
+      },
+      "story_patterns": [
+        "天生的人际交往高手，人缘极好，在班级里是大家的开心果...",
+        "学习成绩中等，但情商很高，善于化解同学之间的矛盾...",
+        "喜欢组织各种活动，是班级聚会和活动的灵魂人物..."
+      ],
+      "current_situation": {
+        "starting_motivation": "让高中生活充满快乐回忆",
+        "hidden_struggles": ["害怕被孤立", "学业压力", "情感困惑"],
+        "secret_dreams": ["成为活动策划师", "拥有真挚的友谊"]
+      }
+    }
+  }
+}

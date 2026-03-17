@@ -1,0 +1,57 @@
+{
+  "replay_templates": {
+    "daily_summary": {
+      "title_template": "【{date}】今日回顾",
+      "sections": [
+        {
+          "name": "重要事件",
+          "format": "• {event_description}"
+        },
+        {
+          "name": "成长亮点", 
+          "format": "✨ {student_name}: {achievement}"
+        },
+        {
+          "name": "关系变化",
+          "format": "🤝 {relationship_update}"
+        },
+        {
+          "name": "明日预告",
+          "format": "📅 {next_day_preview}"
+        }
+      ],
+      "generation_time": "21:00"
+    },
+    "weekly_digest": {
+      "title_template": "【第{week_number}周】班级周报",
+      "sections": [
+        {
+          "name": "本周精彩",
+          "format": "🌟 {highlight_moment}"
+        },
+        {
+          "name": "成长轨迹",
+          "format": "📈 {growth_progress}"
+        },
+        {
+          "name": "班级动态", 
+          "format": "👥 {class_dynamics}"
+        },
+        {
+          "name": "下周预告",
+          "format": "🔮 {next_week_preview}"
+        }
+      ],
+      "generation_time": "sunday_20:00"
+    },
+    "memory_moment": {
+      "title_template": "珍贵回忆 · {moment_type}",
+      "format": "{story_content}",
+      "trigger_conditions": {
+        "achievement_unlocked": true,
+        "relationship_milestone": true,
+        "emotional_breakthrough": true
+      }
+    }
+  }
+}

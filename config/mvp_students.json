@@ -1,0 +1,233 @@
+{
+  "mvp_students": {
+    "academic_genius": [
+      {
+        "student_id": "stu_001",
+        "name": "李明",
+        "age": 16,
+        "gender": "male",
+        "basic_info": {
+          "height": 175,
+          "weight": 60,
+          "birthday": "2010-03-15",
+          "blood_type": "A",
+          "hometown": "县城"
+        },
+        "appearance": {
+          "avatar_template": "glasses_boy",
+          "hair_style": "short_straight",
+          "hair_color": "black",
+          "eye_color": "brown",
+          "clothing_style": "neat_school_uniform"
+        },
+        "personality": {
+          "extroversion": 0.3,
+          "agreeableness": 0.7,
+          "conscientiousness": 0.9,
+          "neuroticism": 0.6,
+          "openness": 0.8,
+          "traits": {
+            "shy": true,
+            "competitive": true,
+            "bookworm": true,
+            "perfectionist": true
+          }
+        },
+        "background_profile": {
+          "personal_summary": "来自小县城的学霸，承载着全家人的期望来到省重点高中。",
+          "family_background": {
+            "family_structure": "nuclear_family",
+            "parents_occupation": {"father": "工厂工人", "mother": "小学教师"},
+            "family_income_level": "middle",
+            "family_values": ["努力学习", "诚实守信", "孝顺父母"]
+          },
+          "academic_history": {
+            "previous_school": "县城第一中学",
+            "grade_trend": "stable",
+            "subject_strengths": ["数学", "物理"],
+            "subject_weaknesses": ["英语", "体育"]
+          },
+          "social_history": {
+            "social_reputation": "average",
+            "personality_in_groups": "quiet_observer"
+          },
+          "entrance_exam": {
+            "gaokao_score": 685,
+            "admission_story": "以全市第3名的成绩考入本校"
+          }
+        }
+      }
+    ],
+    "social_butterfly": [
+      {
+        "student_id": "stu_002", 
+        "name": "王芳",
+        "age": 16,
+        "gender": "female",
+        "basic_info": {
+          "height": 165,
+          "weight": 52,
+          "birthday": "2010-05-20",
+          "blood_type": "B",
+          "hometown": "市区"
+        },
+        "appearance": {
+          "avatar_template": "cheerful_girl",
+          "hair_style": "shoulder_length_wavy", 
+          "hair_color": "dark_brown",
+          "eye_color": "black",
+          "clothing_style": "fashionable_school_uniform"
+        },
+        "personality": {
+          "extroversion": 0.9,
+          "agreeableness": 0.8,
+          "conscientiousness": 0.6,
+          "neuroticism": 0.4,
+          "openness": 0.7,
+          "traits": {
+            "social_butterfly": true,
+            "artistic": true,
+            "competitive": false
+          }
+        },
+        "background_profile": {
+          "personal_summary": "家境优渥的城市女孩，人缘极好但学习成绩一般。",
+          "family_background": {
+            "family_structure": "nuclear_family", 
+            "parents_occupation": {"father": "公司高管", "mother": "全职太太"},
+            "family_income_level": "high",
+            "family_values": ["快乐成长", "全面发展", "社交能力"]
+          },
+          "academic_history": {
+            "previous_school": "市实验中学",
+            "grade_trend": "declining",
+            "subject_strengths": ["语文", "艺术"],
+            "subject_weaknesses": ["数学", "化学"]
+          },
+          "social_history": {
+            "social_reputation": "popular",
+            "extracurricular_activities": ["舞蹈", "主持"]
+          },
+          "entrance_exam": {
+            "gaokao_score": 598,
+            "admission_story": "通过特长生渠道入学"
+          }
+        }
+      }
+    ],
+    "problem_student": [
+      {
+        "student_id": "stu_003",
+        "name": "张伟",
+        "age": 17,
+        "gender": "male", 
+        "basic_info": {
+          "height": 180,
+          "weight": 68,
+          "birthday": "2009-11-08",
+          "blood_type": "O",
+          "hometown": "郊区"
+        },
+        "appearance": {
+          "avatar_template": "rebellious_boy",
+          "hair_style": "messy_short",
+          "hair_color": "black",
+          "eye_color": "dark_brown", 
+          "clothing_style": "casual_modified_uniform"
+        },
+        "personality": {
+          "extroversion": 0.7,
+          "agreeableness": 0.3,
+          "conscientiousness": 0.2,
+          "neuroticism": 0.8,
+          "openness": 0.6,
+          "traits": {
+            "rebel": true,
+            "athletic": true,
+            "shy": false
+          }
+        },
+        "background_profile": {
+          "personal_summary": "单亲家庭的问题少年，经常违反校规但内心渴望被理解。",
+          "family_background": {
+            "family_structure": "single_parent",
+            "parents_occupation": {"father": "未知", "mother": "餐厅服务员"},
+            "family_income_level": "low",
+            "family_values": ["独立自主", "不惹麻烦"]
+          },
+          "academic_history": {
+            "previous_school": "郊区第三中学",
+            "grade_trend": "declining", 
+            "subject_strengths": ["体育", "实践课程"],
+            "subject_weaknesses": ["所有理论课程"]
+          },
+          "social_history": {
+            "social_reputation": "controversial",
+            "personality_in_groups": "troublemaker_leader"
+          },
+          "entrance_exam": {
+            "gaokao_score": 485,
+            "admission_story": "勉强达到录取分数线"
+          }
+        }
+      }
+    ],
+    "quiet_observer": [
+      {
+        "student_id": "stu_004",
+        "name": "陈静",
+        "age": 16,
+        "gender": "female",
+        "basic_info": {
+          "height": 162,
+          "weight": 48,
+          "birthday": "2010-08-12",
+          "blood_type": "AB", 
+          "hometown": "农村"
+        },
+        "appearance": {
+          "avatar_template": "shy_girl",
+          "hair_style": "long_straight",
+          "hair_color": "black",
+          "eye_color": "brown",
+          "clothing_style": "simple_school_uniform"
+        },
+        "personality": {
+          "extroversion": 0.2,
+          "agreeableness": 0.9,
+          "conscientiousness": 0.8,
+          "neuroticism": 0.7,
+          "openness": 0.5,
+          "traits": {
+            "shy": true,
+            "bookworm": true,
+            "artistic": true
+          }
+        },
+        "background_profile": {
+          "personal_summary": "来自农村的内向女孩，学习刻苦但缺乏自信。",
+          "family_background": {
+            "family_structure": "extended_family",
+            "parents_occupation": {"father": "农民", "mother": "家庭主妇"},
+            "family_income_level": "low",
+            "family_values": ["勤俭节约", "读书改变命运", "听话懂事"]
+          },
+          "academic_history": {
+            "previous_school": "乡镇中学",
+            "grade_trend": "improving",
+            "subject_strengths": ["语文", "历史"],
+            "subject_weaknesses": ["英语", "物理"]
+          },
+          "social_history": {
+            "social_reputation": "loner",
+            "personality_in_groups": "silent_observer"
+          },
+          "entrance_exam": {
+            "gaokao_score": 612,
+            "admission_story": "全村第一个考上省重点的学生"
+          }
+        }
+      }
+    ]
+  }
+}
